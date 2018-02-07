@@ -1,5 +1,6 @@
 // First go program of golp
 
+// Print Hello world to cmd
 package main
 
 import (
