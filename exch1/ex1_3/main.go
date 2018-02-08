@@ -2,15 +2,14 @@
 package main
 
 import (
-	"os"
 	"strings"
 )
 
 func main() {
-	args := os.Args[:]
-	echo1(args)
-	echo2(args)
-	echo3(args)
+	// args := os.Args[:]
+	// echo1(args)
+	// echo2(args)
+	// echo3(args)
 }
 
 func echo1(args []string) {
