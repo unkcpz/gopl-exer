@@ -22,7 +22,7 @@ func main() {
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 }
 
-func fetch(url string, ch chan string) {
+func fetch(url string, ch chan<- string) {
 	start := time.Now()
 	resp, err := http.Get(url)
 	if err != nil {
@@ -36,5 +36,5 @@ func fetch(url string, ch chan string) {
 		os.Exit(1)
 	}
 	secs := time.Since(start).Seconds()
-	ch <- fmt.Sprintf("%8.2fs  %7d  %s", secs, nbytes, url)
+	ch <- fmt.Sprintf("%2fs  %7d  %s", secs, nbytes, url)
 }
