@@ -19,6 +19,9 @@ const (
 )
 
 func main() {
+	if len(os.Args[1:]) > 0 && os.Args[1] == "web" {
+
+	}
 	lissajous(os.Stdout)
 }
 
