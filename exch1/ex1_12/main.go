@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 var palette = []color.Color{color.White, color.Black}
@@ -22,18 +23,23 @@ const (
 
 func main() {
 	if len(os.Args[1:]) > 0 && os.Args[1] == "web" {
-		http.HandleFunc("/lissajous", func(w http.ResponseWriter, r *http.Request) {
-			lissajous(w)
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			cycleStr := r.FormValue("cycles")
+			cycles, err := strconv.Atoi(cycleStr)
+			if err != nil {
+				log.Printf("bad cycles param: %s, %v", cycleStr, err)
+				return
+			}
+			lissajous(w, cycles)
 		})
 		log.Fatal(http.ListenAndServe("localhost:8000", nil))
 		return
 	}
-	lissajous(os.Stdout)
+	lissajous(os.Stdout, 5)
 }
 
-func lissajous(out io.Writer) {
+func lissajous(out io.Writer, cycles int) {
 	const (
-		cycles  = 5
 		res     = 0.001
 		nframes = 64
 		delay   = 8   //delay between frames in 10ms units
@@ -45,7 +51,7 @@ func lissajous(out io.Writer) {
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
-		for t := 0.0; t < cycles*2*math.Pi; t += res {
+		for t := 0.0; t < float64(cycles)*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
