@@ -7,6 +7,8 @@ func TestIsPalindrome(t *testing.T) {
 		input string
 		want  bool
 	}{
+		{"", true},
+		{" ", true},
 		{"上海自来水来自海上", true},
 		{"detartrated", true},
 		{"kayak", true},
@@ -19,5 +21,23 @@ func TestIsPalindrome(t *testing.T) {
 		if got := IsPalindrome(test.input); got != test.want {
 			t.Errorf(`IsPalindrome(%q) = %t`, test.input, got)
 		}
+	}
+
+	for _, test := range tests {
+		if got := IsPalindromeFast(test.input); got != test.want {
+			t.Errorf(`IsPalindrome(%q) = %t`, test.input, got)
+		}
+	}
+}
+
+func BenchmarkIsPalindrome(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		IsPalindrome("Été le bar arabe l'été")
+	}
+}
+
+func BenchmarkIsPalindromeFast(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		IsPalindromeFast("Été le bar arabe l'été")
 	}
 }
